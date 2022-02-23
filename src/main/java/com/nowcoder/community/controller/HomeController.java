@@ -38,13 +38,18 @@ public class HomeController {
         if(list != null) {
             for(DiscussPost post : list) {
                 Map<String, Object> map = new HashMap<>();
-                map.put("post",post);//放入帖子
+                map.put("post", post);//放入帖子
                 User user = userService.findUserById(post.getUserId());
-                map.put("user", user);
+                map.put("user", user);//用户、帖子数据回传
                 discussPosts.add(map);
             }
         }
         model.addAttribute("discussPosts", discussPosts);//传入到model
         return "/index";
+    }
+
+    @RequestMapping(path = "/error", method = RequestMethod.GET)
+    public String getErrorPage() {
+        return "/error/500";
     }
 }
