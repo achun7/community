@@ -19,8 +19,16 @@
         <if test="userId!=0">
             and user_id = #{userId}
         </if>
+        <if test="orderMode==0">
 #        降序 按type排列
-        order by type desc, create_time desc
+            order by type desc, create_time desc
+        </if>
+
+        <if test="orderMode==1">
+#        降序 按分数排列
+            order by type desc, score desc, create_time desc
+        </if>
+
 #        分页
         limit #{offset}, #{limit}
     </select>
@@ -40,13 +48,17 @@
         where id = #{id}
     </select>
 
-    <insert id="insertDiscussPost" parameterType="DiscussPost">
+    <insert id="insertDiscussPost" parameterType="DiscussPost" keyProperty="id">
         insert into discuss_post(<include refid="insertFields"></include>)
         values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
     </insert>
 
     <update id="updateCommentCount">
         update discuss_post set comment_count = #{commentCount} where id = #{id}
+    </update>
+
+    <update id="updateScore">
+        update discuss_post set score = #{score} where id = #{id}
     </update>
 
 </mapper>
